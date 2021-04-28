@@ -1,3 +1,15 @@
-# Time Honoured Tradition
+# To view directory structures with forward slashes
+from pathlib import PurePosixPath 
 
-print('Hello World - Welcome to our Project Environment') 
+from utility import *
+
+
+
+
+if __name__=='__main__':
+
+    # Get selected chat
+    chat = select_chat()
+    print(f'Chat location: {PurePosixPath(chat)} ')
+    
+    chat_preview(chat,lines=5)
