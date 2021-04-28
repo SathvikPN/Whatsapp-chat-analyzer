@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Donot track data except sample.txt
+data/*.txt
+!sample.txt
