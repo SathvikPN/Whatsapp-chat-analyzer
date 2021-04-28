@@ -1,6 +1,10 @@
-import os
+# from os import scandir
 
-def select_chat(path='data'):
+from pathlib import Path, PureWindowsPath, PurePosixPath
+# The objects returned by Path are either PosixPath or WindowsPath objects 
+# depending on the OS.
+
+def select_chat(directory='data/'):
     """ Returns path for chat selected by user. 
 
     Lists all available chats available at given path.
@@ -9,29 +13,42 @@ def select_chat(path='data'):
     DEFAULT_CHAT = 'sample.txt'
     chat_list = {}
 
-    with os.scandir(path) as entries:
-        id = 1
-        for entry in entries:
+    with Path(directory) as dir_path:
+    # The Path() object will convert forward slashes into the 
+    # correct kind of slash for the current operating system.
+        id = 0
+        for entry in dir_path.iterdir():
             if entry.is_file() and entry.name.endswith('.txt'):
-                chat_list[id] = entry.name
                 id += 1
-        
+                chat_list[id] = entry.name
+                
     for id, chat in chat_list.items():
         print(f'[{id}] {chat} ')
     
     try:
         selected = int(input('select chat ID: '))
         if selected<1 or selected>id:
-            raise Exception()
+            raise ValueError()
         else:
-            path = os.path.join(path, chat_list[selected])
+            chat_location = dir_path / chat_list[selected]
     except:
         print(f"Invalid choice. Fallback to default '{DEFAULT_CHAT}' ")
-        path = os.path.join(path, DEFAULT_CHAT)
+        chat_location = dir_path / DEFAULT_CHAT
     
-    return path
+    return chat_location
+
+def chat_preview(chat, lines=3):
+    """ Previews the beginning few lines of chat as specified """
+    with open(chat, mode='r', encoding='utf8') as file:
+        print(f"[Preview of beginning {lines} lines of chat]")
+        for _ in range(lines):
+            print(file.readline(), end='')
+    # except:
+    #     print('Error in chat preview')
 
 
 if __name__=='__main__':
     chat = select_chat()
-    print('Selected chat location', chat)
+    print(f'Selected chat location: {PurePosixPath(chat)}')
+
+    chat_preview(chat, lines=5)
