@@ -129,5 +129,9 @@ dmypy.json
 .pyre/
 
 # Donot track data except sample.txt
+data/
 data/*.txt
 !sample.txt
+
+# scratch pad 
+scratch_pad.md
