@@ -40,10 +40,10 @@ def select_chat(directory='data/'):
 def chat_preview(chat, lines=3):
     """ Previews the beginning few lines of chat as specified """
     with open(chat, mode='r', encoding='utf8') as file:
-        print(f"[Preview of beginning {lines} lines of chat]")
+        print(f"\n[Preview of beginning {lines} lines of chat]\n")
         for _ in range(lines):
             print(file.readline(),end='')
-        print('\n[End of chat preview]')
+        print('\n[End of chat preview]\n')
                 
 
 
@@ -51,4 +51,4 @@ if __name__=='__main__':
     chat = select_chat()
     print(f'Selected chat location: {PurePosixPath(chat)}')
 
-    chat_preview(chat, lines=25)
+    chat_preview(chat, lines=10)
