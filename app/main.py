@@ -5,6 +5,7 @@ from utility import *
 import re
 import pandas as pd
 import numpy as np
+import emoji
 
 # Unique messages are identified if starts with DateTime stamp
 def startswith_datetime(line):
@@ -74,6 +75,9 @@ def drop_sys_msg(dataframe, column='Author'):
 
 
 
+
+
+
 if __name__=='__main__':
     chat_file = select_chat() 
     chat_preview(chat_file,lines=5)
@@ -110,6 +114,11 @@ if __name__=='__main__':
     df['Date'] = pd.to_datetime(df['Date'])
 
     drop_sys_msg(df)
+
+    total_messages = df.shape[0]
+    media_messages = df[df['Message'] == '<Media omitted>'].shape[0]
+
+    
 
     
 
