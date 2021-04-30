@@ -4,8 +4,7 @@ from pathlib import PurePosixPath
 from utility import *
 import re
 import pandas as pd
-import numpy as np
-import emoji
+
 
 # Unique messages are identified if starts with DateTime stamp
 def startswith_datetime(line):
@@ -66,7 +65,7 @@ def get_data_tokens(unique_message):
 def drop_sys_msg(dataframe, column='Author'):
     """ Drops all rows with null objects from the passed column in dataframe received """
 
-    print(f"<{df[column].isnull().sum()} system messages detected> Dropping off...")
+    print(f"<{df[column].isnull().sum()} system-generated-messages detected> dropping off...")
 
     df.dropna(inplace=True) 
     # print(df.head(10)) # drop verification
@@ -127,7 +126,8 @@ if __name__=='__main__':
     media_messages = df[df['Message'] == '<Media omitted>'].shape[0]
 
     df['urlcount'] = df.Message.apply(url_counter)
-    total_links = np.sum(df.urlcount)
+    total_links = df.urlcount.sum()
+    
     
 
     
