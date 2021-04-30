@@ -118,7 +118,9 @@ if __name__=='__main__':
 
     total_messages = df.shape[0]
 
-    print((total_messages))
+    media_messages = df[df['Message'] == '<Media omitted>'].shape[0]
+
+    
 
     
 
