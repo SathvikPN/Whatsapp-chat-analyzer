@@ -4,6 +4,7 @@ from pathlib import PurePosixPath
 from utility import *
 import re
 import pandas as pd
+import numpy as np
 
 # Unique messages are identified if starts with DateTime stamp
 def startswith_datetime(line):
@@ -61,6 +62,14 @@ def get_data_tokens(unique_message):
 
     return date, time, author, message
 
+def drop_sys_msg(dataframe, column='Author'):
+    """ Drops all rows with null objects from the passed column in dataframe received """
+
+    print(f"<{df[column].isnull().sum()} system messages detected> Dropping off...")
+
+    df.dropna(inplace=True) 
+
+    print(df.head(10)) # drop verification
 
 
 
@@ -99,4 +108,24 @@ if __name__=='__main__':
     # initialise pandas DataFrame 
     df = pd.DataFrame(parsedData, columns=['Date','Time','Author','Message'])
     df['Date'] = pd.to_datetime(df['Date'])
-    print(df)
+
+    drop_sys_msg(df)
+
+    
+
+    
+    
+    
+
+    
+
+    
+    
+
+
+# Scratch_pad
+# print(df.head(10)) # Display few entries at the beginning
+# df.dropna(inplace=True) # Drops null objects
+# print(df.shape) # DataFrame dimension. [0]==>Rows [1]==>Columns
+# df.replace(to_replace='WhatsApp Generated', value=np.nan, inplace=True)
+# print(df.Author.unique())
