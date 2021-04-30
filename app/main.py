@@ -128,7 +128,11 @@ if __name__=='__main__':
     df['urlcount'] = df.Message.apply(url_counter)
     total_links = df.urlcount.sum()
     
-    
+    print(f"""--- Stats Overview ---
+    Total Messages: [{total_messages}]
+    Media Messages: [{media_messages}]
+    Total Links: [{total_links}]
+    """)
 
     
 
