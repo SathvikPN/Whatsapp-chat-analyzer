@@ -72,6 +72,12 @@ def drop_sys_msg(dataframe, column='Author'):
     # print(df.head(10)) # drop verification
 
 
+def url_counter(message):
+    """ Returns the total number of urls detected in the message """
+    URLPATTERN = r'(https?://\S+)'
+    urls_count= len(re.findall(URLPATTERN, message))
+    return urls_count
+
 
 
 
@@ -120,6 +126,8 @@ if __name__=='__main__':
 
     media_messages = df[df['Message'] == '<Media omitted>'].shape[0]
 
+    df['urlcount'] = df.Message.apply(url_counter)
+    total_links = np.sum(df.urlcount)
     
 
     
