@@ -69,8 +69,9 @@ def drop_sys_msg(dataframe, column='Author'):
     print(f"<{df[column].isnull().sum()} system messages detected> Dropping off...")
 
     df.dropna(inplace=True) 
+    # print(df.head(10)) # drop verification
 
-    print(df.head(10)) # drop verification
+
 
 
 
@@ -116,7 +117,8 @@ if __name__=='__main__':
     drop_sys_msg(df)
 
     total_messages = df.shape[0]
-    media_messages = df[df['Message'] == '<Media omitted>'].shape[0]
+
+    print((total_messages))
 
     
 
@@ -127,14 +129,3 @@ if __name__=='__main__':
     
 
     
-
-    
-    
-
-
-# Scratch_pad
-# print(df.head(10)) # Display few entries at the beginning
-# df.dropna(inplace=True) # Drops null objects
-# print(df.shape) # DataFrame dimension. [0]==>Rows [1]==>Columns
-# df.replace(to_replace='WhatsApp Generated', value=np.nan, inplace=True)
-# print(df.Author.unique())
