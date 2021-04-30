@@ -4,7 +4,7 @@ from pathlib import PurePosixPath
 from utility import *
 import re
 import pandas as pd
-import numpy as np
+
 
 # Unique messages are identified if starts with DateTime stamp
 def startswith_datetime(line):
@@ -65,11 +65,21 @@ def get_data_tokens(unique_message):
 def drop_sys_msg(dataframe, column='Author'):
     """ Drops all rows with null objects from the passed column in dataframe received """
 
-    print(f"<{df[column].isnull().sum()} system messages detected> Dropping off...")
+    print(f"<{df[column].isnull().sum()} system-generated-messages detected> dropping off...")
 
     df.dropna(inplace=True) 
+    # print(df.head(10)) # drop verification
 
-    print(df.head(10)) # drop verification
+
+def url_counter(message):
+    """ Returns the total number of urls detected in the message """
+    URLPATTERN = r'(https?://\S+)'
+    urls_count= len(re.findall(URLPATTERN, message))
+    return urls_count
+
+
+
+
 
 
 
@@ -111,6 +121,21 @@ if __name__=='__main__':
 
     drop_sys_msg(df)
 
+    total_messages = df.shape[0]
+
+    media_messages = df[df['Message'] == '<Media omitted>'].shape[0]
+
+    df['urlcount'] = df.Message.apply(url_counter)
+    total_links = df.urlcount.sum()
+    
+    print(f"""--- Stats Overview ---
+    Total Messages: [{total_messages}]
+    Media Messages: [{media_messages}]
+    Total Links: [{total_links}]
+    """)
+
+    
+
     
 
     
@@ -118,14 +143,3 @@ if __name__=='__main__':
     
 
     
-
-    
-    
-
-
-# Scratch_pad
-# print(df.head(10)) # Display few entries at the beginning
-# df.dropna(inplace=True) # Drops null objects
-# print(df.shape) # DataFrame dimension. [0]==>Rows [1]==>Columns
-# df.replace(to_replace='WhatsApp Generated', value=np.nan, inplace=True)
-# print(df.Author.unique())
