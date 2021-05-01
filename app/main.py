@@ -134,6 +134,10 @@ if __name__=='__main__':
     Total Links: [{total_links}]
     """)
 
+    # original df remains unaffected. Operations are not inplace.
+    media_messages_df = df[df["Message"] == '<Media omitted>']
+    messages_df = df.drop(media_messages_df.index)
+
     
 
     
