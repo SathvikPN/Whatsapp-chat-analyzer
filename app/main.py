@@ -138,6 +138,10 @@ if __name__=='__main__':
     media_messages_df = df[df["Message"] == '<Media omitted>']
     messages_df = df.drop(media_messages_df.index)
 
+    # Letters and Word count for each message
+    messages_df['Letter_count'] = messages_df['Message'].apply(lambda s: len(s))
+    messages_df['Word_count'] = messages_df['Message'].apply(lambda s: len(s.split(' ')))
+    # explicit is better than implicit
     
 
     
