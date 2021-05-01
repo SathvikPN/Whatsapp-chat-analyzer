@@ -162,8 +162,6 @@ if __name__=='__main__':
     
     emoji_df = pd.DataFrame(emoji_freq, columns=['emoji','count'])
 
-    print("EMOJI DF-----------------------------------------------------------")
-    print(emoji_df.head())
 
 
     unique_emojis_set = set(emojis_list)
