@@ -135,14 +135,31 @@ if __name__=='__main__':
     """)
 
     # original df remains unaffected. Operations are not inplace.
-    media_messages_df = df[df["Message"] == '<Media omitted>']
+    media_messages_df = df[df['Message'] == "<Media omitted>"]
     messages_df = df.drop(media_messages_df.index)
 
     # Letters and Word count for each message
     messages_df['Letter_count'] = messages_df['Message'].apply(lambda s: len(s))
     messages_df['Word_count'] = messages_df['Message'].apply(lambda s: len(s.split(' ')))
     # explicit is better than implicit
-    
+    # print(messages_df.info())
+
+    # list out the unique authors in the chat
+    participants = messages_df.Author.unique()
+
+
+    for i in range(len(participants)):
+
+        # filter msg of particular user
+        profile_df = messages_df[messages_df['Author'] == participants[i]]
+
+        print(f"""--- Stats of {participants[i]} ---
+        Messages sent: {profile_df.shape[0]} 
+        Words-per-msg: {(profile_df['Word_count'].sum())//(profile_df.shape[0])} (on average)
+        Links shared: {profile_df['urlcount'].sum()}
+        Media messages: {media_messages_df[media_messages_df['Author']==participants[i]].shape[0]}
+        """)
+        
 
     
 
