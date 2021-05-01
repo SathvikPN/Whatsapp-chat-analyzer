@@ -10,6 +10,7 @@ from collections import Counter
 
 
 
+
 # Unique messages are identified if starts with DateTime stamp
 def startswith_datetime(line):
     """ Returns True if starts with Date Time stamp, else False"""
@@ -161,8 +162,7 @@ if __name__=='__main__':
     emoji_freq = Counter(emojis_list).most_common()
     
     emoji_df = pd.DataFrame(emoji_freq, columns=['emoji','count'])
-
-
+    # emoji_df.index = emoji_df.index + 1 
 
     unique_emojis_set = set(emojis_list)
     total_unique_emojis = len(unique_emojis_set)
@@ -174,7 +174,11 @@ if __name__=='__main__':
     Total Links: [{total_links}]
     Total emojis: [{total_emojis}] 
     Unique emojis: [{total_unique_emojis}]
+    Most Used emojis -----
+    {emoji_df.head(5)}
     """)
+
+    
 
 
 
