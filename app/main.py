@@ -162,7 +162,7 @@ if __name__=='__main__':
     emoji_freq = Counter(emojis_list).most_common()
     
     emoji_df = pd.DataFrame(emoji_freq, columns=['emoji','count'])
-    # emoji_df.index = emoji_df.index + 1 
+    emoji_df.index = emoji_df.index + 1 
 
     unique_emojis_set = set(emojis_list)
     total_unique_emojis = len(unique_emojis_set)
