@@ -145,14 +145,6 @@ if __name__=='__main__':
 
     df['emoji'] = df.Message.apply(extract_emojis, args=(regex_set,))
     total_emojis = df.emoji.apply(lambda c:len(c)).sum()
-    
-    
-    print(f"""--- Stats Overview ---
-    Total Messages: [{total_messages}]
-    Media Messages: [{media_messages}]
-    Total Links: [{total_links}]
-    emojis used: [{total_emojis}] 
-    """)
 
     # original df remains unaffected. Operations are not inplace.
     media_messages_df = df[df['Message'] == "<Media omitted>"]
@@ -162,6 +154,22 @@ if __name__=='__main__':
     messages_df['Letter_count'] = messages_df['Message'].apply(lambda s: len(s))
     messages_df['Word_count'] = messages_df['Message'].apply(lambda s: len(s.split(' ')))
     # explicit is better than implicit
+
+
+
+    unique_emojis_set = set([a for b in messages_df.emoji for a in b])
+    total_unique_emojis = len(unique_emojis_set)
+    
+    
+    print(f"""--- Stats Overview ---
+    Total Messages: [{total_messages}]
+    Media Messages: [{media_messages}]
+    Total Links: [{total_links}]
+    Total emojis: [{total_emojis}] 
+    Unique emojis: [{total_unique_emojis}]
+    """)
+
+
 
 
     # list out the unique authors in the chat
@@ -179,6 +187,7 @@ if __name__=='__main__':
         Links shared: {profile_df['urlcount'].sum()}
         Media messages: {media_messages_df[media_messages_df['Author']==participants[i]].shape[0]}
         Emojis sent: {profile_df['emoji'].str.len().sum()}
+        Unique emojis: {len(set([a for b in profile_df.emoji for a in b]))}
         """)
         
 
