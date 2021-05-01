@@ -5,6 +5,8 @@ from utility import *
 import re
 import pandas as pd
 import emoji
+from collections import Counter
+
 
 
 
@@ -156,8 +158,13 @@ if __name__=='__main__':
     # explicit is better than implicit
 
 
+    emojis_list = [a for b in messages_df.emoji for a in b]
+    emoji_freq = Counter(emojis_list).most_common()
+    
+    emoji_df = pd.DataFrame(emoji_freq, columns=['emoji','count'])
+    emoji_df.index = emoji_df.index + 1 
 
-    unique_emojis_set = set([a for b in messages_df.emoji for a in b])
+    unique_emojis_set = set(emojis_list)
     total_unique_emojis = len(unique_emojis_set)
     
     
@@ -168,6 +175,13 @@ if __name__=='__main__':
     Total emojis: [{total_emojis}] 
     Unique emojis: [{total_unique_emojis}]
     """)
+    if total_unique_emojis>0:
+        print(f"""
+        Most Used emojis -----
+        {emoji_df.head(5)}
+        """)
+
+    
 
 
 
@@ -180,6 +194,9 @@ if __name__=='__main__':
 
         # filter msg of particular user
         profile_df = messages_df[messages_df['Author'] == participants[i]]
+        profile_emojis_list = [a for b in profile_df.emoji for a in b]
+        emoji_freq = dict(Counter(profile_emojis_list).most_common(5))
+        
 
         print(f"""--- Stats of {participants[i]} ---
         Messages sent: {profile_df.shape[0]} 
@@ -187,7 +204,8 @@ if __name__=='__main__':
         Links shared: {profile_df['urlcount'].sum()}
         Media messages: {media_messages_df[media_messages_df['Author']==participants[i]].shape[0]}
         Emojis sent: {profile_df['emoji'].str.len().sum()}
-        Unique emojis: {len(set([a for b in profile_df.emoji for a in b]))}
+        Unique emojis: {len(set(profile_emojis_list))}
+        Most used emojis: {emoji_freq}
         """)
         
 
