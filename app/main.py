@@ -4,6 +4,9 @@ from pathlib import PurePosixPath
 from utility import *
 import re
 import pandas as pd
+import emoji
+
+
 
 
 # Unique messages are identified if starts with DateTime stamp
@@ -77,7 +80,12 @@ def url_counter(message):
     urls_count= len(re.findall(URLPATTERN, message))
     return urls_count
 
-
+def extract_emojis(message,regex_set):
+    """ Returns the list of emojis found in the text message line """
+    # https://blog.finxter.com/how-to-extract-all-emojis-from-text-in-python/
+    msg = [message]
+    emojis_list = regex_set.findall(msg[0])
+    return emojis_list
 
 
 
@@ -85,6 +93,14 @@ def url_counter(message):
 
 
 if __name__=='__main__':
+    # Create an iterable object.
+    emojis_iter = map(lambda y: y, emoji.UNICODE_EMOJI['en'].keys())
+    # Use the iterable object to compile a regular expression set of all emojis within
+    # the ‘en’ dictionary subset
+    regex_set = re.compile('|'.join(re.escape(em) for em in emojis_iter))
+    # Use the compiled regular expression set to find and extract all emojis in
+    # orig_list
+
     chat_file = select_chat() 
     chat_preview(chat_file,lines=5)
 
@@ -122,16 +138,20 @@ if __name__=='__main__':
     drop_sys_msg(df)
 
     total_messages = df.shape[0]
-
     media_messages = df[df['Message'] == '<Media omitted>'].shape[0]
 
     df['urlcount'] = df.Message.apply(url_counter)
     total_links = df.urlcount.sum()
+
+    df['emoji'] = df.Message.apply(extract_emojis, args=(regex_set,))
+    total_emojis = df.emoji.apply(lambda c:len(c)).sum()
+    
     
     print(f"""--- Stats Overview ---
     Total Messages: [{total_messages}]
     Media Messages: [{media_messages}]
     Total Links: [{total_links}]
+    emojis used: [{total_emojis}] 
     """)
 
     # original df remains unaffected. Operations are not inplace.
@@ -142,7 +162,7 @@ if __name__=='__main__':
     messages_df['Letter_count'] = messages_df['Message'].apply(lambda s: len(s))
     messages_df['Word_count'] = messages_df['Message'].apply(lambda s: len(s.split(' ')))
     # explicit is better than implicit
-    # print(messages_df.info())
+
 
     # list out the unique authors in the chat
     participants = messages_df.Author.unique()
@@ -158,6 +178,7 @@ if __name__=='__main__':
         Words-per-msg: {(profile_df['Word_count'].sum())//(profile_df.shape[0])} (on average)
         Links shared: {profile_df['urlcount'].sum()}
         Media messages: {media_messages_df[media_messages_df['Author']==participants[i]].shape[0]}
+        Emojis sent: {profile_df['emoji'].str.len().sum()}
         """)
         
 
