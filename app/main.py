@@ -5,6 +5,7 @@ from utility import *
 import re
 import pandas as pd
 import emoji
+from collections import Counter
 
 
 
@@ -156,8 +157,16 @@ if __name__=='__main__':
     # explicit is better than implicit
 
 
+    emojis_list = [a for b in messages_df.emoji for a in b]
+    emoji_freq = Counter(emojis_list).most_common()
+    
+    emoji_df = pd.DataFrame(emoji_freq, columns=['emoji','count'])
 
-    unique_emojis_set = set([a for b in messages_df.emoji for a in b])
+    print("EMOJI DF-----------------------------------------------------------")
+    print(emoji_df.head())
+
+
+    unique_emojis_set = set(emojis_list)
     total_unique_emojis = len(unique_emojis_set)
     
     
