@@ -6,8 +6,7 @@ import re
 import pandas as pd
 import emoji
 from collections import Counter
-import plotly.express as px
-import matplotlib.pyplot as plt
+
 
 
 
@@ -180,26 +179,6 @@ if __name__=='__main__':
     {emoji_df.head(5)}
     """)
 
-    # fig = px.pie(emoji_df, values='count', names='emoji', title='emoji distribution')
-    # fig.update_traces(textposition='inside', textinfo='percent+label')
-    # fig.show()
-    # date_df = messages_df.groupby("Date").sum()
-    # date_df.reset_index(inplace=True)
-    # fig = px.line(date_df, x="Date", y="Word_count", title='Number of Messages as time moves on.')
-    # fig.update_xaxes(nticks=20)
-    # fig.show()
-
-    messages_df['Date'].value_counts().head(10).plot.barh()
-    plt.xlabel('Number of Messages')
-    plt.ylabel('Date')
-    plt.show()
-  
-
-
-    
-
-
-
 
     # list out the unique authors in the chat
     participants = messages_df.Author.unique()
@@ -222,7 +201,7 @@ if __name__=='__main__':
         Unique emojis: {len(set(profile_emojis_list))}
         Most used emojis: {emoji_freq}
         """)
-        
+
 
     
 
