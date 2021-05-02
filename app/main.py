@@ -182,8 +182,46 @@ if __name__=='__main__':
 
     # list out the unique authors in the chat
     participants = messages_df.Author.unique()
+    username_menu = {0:'[Quit]'}
+    for id,name in enumerate(participants,1):
+        username_menu[id] = name
+    for id,name in username_menu.items():
+        print(f"[{id}].{name}")
+        print()
+
+    session = 'Live'
+    while session=='Live':
+        while True:
+            try:
+                selected = int(input('enter user ID: '))
+                if selected<0 or selected>len(username_menu):
+                    raise Exception('Incorrect value')
+                else:
+                    break
+            except:
+                print('invalid input. Press 0 to Quit')
+            
+
+        profile = username_menu[selected]
+        if profile=='[Quit]':
+            break
+        profile_df = messages_df[messages_df['Author'] == profile]
+        profile_emojis_list = [a for b in profile_df.emoji for a in b]
+        emoji_freq = dict(Counter(profile_emojis_list).most_common(5))
+        print(f"""--- Stats of {profile} ---
+        Messages sent: {profile_df.shape[0]} 
+        Words-per-msg: {(profile_df['Word_count'].sum())//(profile_df.shape[0])} (on average)
+        Links shared: {profile_df['urlcount'].sum()}
+        Media messages: {media_messages_df[media_messages_df['Author']==profile].shape[0]}
+        Emojis sent: {profile_df['emoji'].str.len().sum()}
+        Unique emojis: {len(set(profile_emojis_list))}
+        Most used emojis: {emoji_freq}
+        """)
+
+    
 
 
+'''
     for i in range(len(participants)):
 
         # filter msg of particular user
@@ -201,7 +239,7 @@ if __name__=='__main__':
         Unique emojis: {len(set(profile_emojis_list))}
         Most used emojis: {emoji_freq}
         """)
-
+'''
 
     
 
