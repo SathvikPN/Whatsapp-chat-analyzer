@@ -1,2 +1,2 @@
-# WhatsApp-Chat-Analytics
-Simplified Analytics toolkit for your WhatsApp chats.
+# crude-chat-analyzer
+My first encounter with datascience project
