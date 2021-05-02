@@ -174,12 +174,10 @@ if __name__=='__main__':
     Total Links: [{total_links}]
     Total emojis: [{total_emojis}] 
     Unique emojis: [{total_unique_emojis}]
+    Most Used emojis -----
+    {emoji_df.head(5)}
     """)
-    if total_unique_emojis>0:
-        print(f"""
-        Most Used emojis -----
-        {emoji_df.head(5)}
-        """)
+
 
     
 
